@@ -11,7 +11,7 @@ import earth.terrarium.olympus.client.ui.UIConstants
 import earth.terrarium.olympus.client.ui.UIIcons
 import earth.terrarium.olympus.client.ui.UITexts
 import earth.terrarium.olympus.client.utils.Orientation
-import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
@@ -26,8 +26,8 @@ private const val HEIGHT = 200
 
 class ServersScreen : Screen(CommonComponents.EMPTY) {
 
-    override fun extractBackground(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, partialTicks: Float) {
-        super.extractBackground(graphics, mouseX, mouseY, partialTicks)
+    override fun render(graphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTicks: Float) {
+        super.render(graphics, mouseX, mouseY, partialTicks)
 
         graphics.drawSprite(
             UIConstants.MODAL,

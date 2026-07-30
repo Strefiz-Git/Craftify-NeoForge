@@ -4,7 +4,7 @@ import com.google.common.hash.Hashing
 import com.mojang.blaze3d.platform.NativeImage
 import earth.terrarium.olympus.client.images.ImageProvider
 import earth.terrarium.olympus.client.images.ImageProviders
-import net.minecraft.resources.Identifier
+import net.minecraft.resources.ResourceLocation
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -17,7 +17,7 @@ object ImageCaches {
 
     private val HTTP = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build()
 
-    val MISSING_TEXTURE: Identifier = Identifier.withDefaultNamespace("missingno")
+    val MISSING_TEXTURE: ResourceLocation = ResourceLocation("minecraft", "missingno")
     val ALBUM: ImageProvider<URI> = create("craftify_jpeg_url", Duration.ofMinutes(1))
     val ASSET: ImageProvider<URI> = create("craftify_asset_url", Duration.ofHours(1))
 
