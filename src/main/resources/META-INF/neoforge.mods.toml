@@ -1,0 +1,15 @@
+[mods]
+[[mods]]
+modId = "craftify"
+version = "1.0.0"
+displayName = "Craftify"
+logoFile = "craftify/gear.png"
+credits = "ThatGravyBoat"
+authors = "ThatGravyBoat"
+description = "A mod that allows you to display your currently playing music from services like Spotify, YouTube Music, Apple Music, etc. in-game."
+[[dependencies.craftify]]
+    modId = "neoforge"
+    mandatory = true
+    versionRange = "[21.1,)"
+    ordering = "NONE"
+    side = "CLIENT"
