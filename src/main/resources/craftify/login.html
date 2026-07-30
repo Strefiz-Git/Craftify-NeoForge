@@ -1,0 +1,46 @@
+<html lang="en-us">
+<head>
+    <link rel="stylesheet" type="text/css" href="https://craftify.thatgravyboat.tech/stylesheets/index.css">
+    <link rel="stylesheet" type="text/css" href="https://craftify.thatgravyboat.tech/stylesheets/animated-links.css">
+    <link rel="stylesheet" type="text/css" href="https://craftify.thatgravyboat.tech/stylesheets/navigation.css">
+    <link rel="stylesheet" type="text/css" href="https://craftify.thatgravyboat.tech/stylesheets/404.css">
+    <title>Craftify - Login</title>
+    <link rel="icon" type="image/png" href="https://craftify.thatgravyboat.tech/assets/logo.png">
+</head>
+<body>
+<ul class="nav">
+    <li><a href="https://craftify.thatgravyboat.tech/">Home</a></li>
+    <li><a href="https://craftify.thatgravyboat.tech/coming-soon">Themes</a></li>
+    <li><a href="https://discord.gg/jRhkYFmpCa">Discord</a></li>
+</ul>
+
+<div class="middle" style="flex-direction: column">
+    <h1 id="login-title">Logging In.</h1>
+    <h1 id="login-text">Loading...</h1>
+</div>
+
+<div class="foot">
+    <p>Made with <span class="no-font" style="color: red">&#10084</span> by ThatGravyBoat</p>
+</div>
+<script defer>
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("code")
+    if (token === undefined) {
+        statusBad()
+    } else {
+        fetch(`http://localhost:21851/spotify/token?${token}`, {method: "GET"});
+        statusGood()
+    }
+
+    function statusGood() {
+        document.getElementById("login-title").innerText = "Login Successful!"
+        document.getElementById("login-text").innerText = "You can return to the game."
+    }
+
+    function statusBad() {
+        document.getElementById("login-title").innerText = "Login Failed!"
+        document.getElementById("login-text").innerText = "Token not found try again."
+    }
+</script>
+</body>
+</html>
