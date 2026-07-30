@@ -14,7 +14,6 @@ class ServerboundSongPacket(
     link: Optional<String>,
 ) : CustomPacketPayload {
 
-    // Enforce limits
     val title: String = title.take(256)
     val artists: List<String> = artists.take(2).map { it.take(256) }
     val link: Optional<String> = link.map { it.take(128) }

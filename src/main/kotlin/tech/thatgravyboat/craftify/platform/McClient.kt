@@ -37,8 +37,6 @@ object McClient {
         return self.isLocalServer || players > 1 || scoreboard != null
     }
 
-    // server stuff
-
     val serverIp: String? get() = self.currentServer?.ip
     val isLanServer: Boolean get() = self.currentServer?.type() == ServerData.Type.LAN
 
