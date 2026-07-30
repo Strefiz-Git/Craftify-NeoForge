@@ -1,6 +1,6 @@
 [versions]
 neoforge = "21.1.213"
-kotlin = "2.1.0"
+kotlin = "1.9.22"
 
 ktor = "2.1.0"
 
