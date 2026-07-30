@@ -16,7 +16,6 @@ import net.neoforged.neoforge.client.event.ClientTickEvent
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent
-import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import tech.thatgravyboat.craftify.config.Config
 import tech.thatgravyboat.craftify.platform.McClient
 import tech.thatgravyboat.craftify.platform.McKeybind
