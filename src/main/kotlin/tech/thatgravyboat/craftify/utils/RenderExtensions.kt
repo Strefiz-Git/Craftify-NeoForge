@@ -1,33 +1,31 @@
 package tech.thatgravyboat.craftify.utils
 
 import com.mojang.blaze3d.platform.NativeImage
+import earth.terrarium.olympus.client.components.base.BaseWidget
 import earth.terrarium.olympus.client.components.base.renderer.WidgetRenderer
+import earth.terrarium.olympus.client.components.base.renderer.WidgetRendererContext
 import earth.terrarium.olympus.client.components.renderers.WidgetRenderers
-import earth.terrarium.olympus.client.pipelines.RoundedRectangle
+import earth.terrarium.olympus.client.shader.builtin.RoundedRectShader
+import earth.terrarium.olympus.client.utils.State as OlympusState
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.network.chat.Component
-import net.minecraft.util.ARGB
 import tech.thatgravyboat.craftify.platform.pushPop
 import tech.thatgravyboat.craftify.platform.scale
 import tech.thatgravyboat.craftify.platform.translate
 import tech.thatgravyboat.craftify.ui.v2.MarqueeWidgetRenderer
 import java.awt.Color
 import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
+import javax.imageio.ImageIO
 import com.teamresourceful.resourcefullib.common.color.Color as OlympusColor
 
 fun Color.toOlympus(): OlympusColor = OlympusColor(red, green, blue, alpha)
 
 fun BufferedImage.toNative(): NativeImage {
-    val native = NativeImage(NativeImage.Format.RGBA, this.width, this.height, false)
-
-    for (x in 0 until this.width) {
-        for (y in 0 until this.height) {
-            native.setPixelABGR(x, y, ARGB.toABGR(this.getRGB(x, y)))
-        }
-    }
-
-    return native
+    val output = ByteArrayOutputStream()
+    ImageIO.write(this, "png", output)
+    return NativeImage.read(output.toByteArray())
 }
 
 fun <T : AbstractWidget> WidgetRenderer<T>.withScale(scale: Float): WidgetRenderer<T> {
@@ -72,7 +70,15 @@ fun <T : AbstractWidget> String.asRenderer(alignment: Float = 0f, color: Color, 
 }
 
 fun GuiGraphics.fillRounded(x: Int, y: Int, width: Int, height: Int, color: Color, radius: Float) {
-    RoundedRectangle.draw(this, x, y, width, height, color.rgb, 0, radius, 0)
+    RoundedRectShader.fill(this, x, y, width, height, color.rgb, 0, radius, 0)
+}
+
+fun renderable(renderer: WidgetRenderer<AbstractWidget>): BaseWidget {
+    return object : BaseWidget(0, 0) {
+        override fun renderWidget(graphics: GuiGraphics, mouseX: Int, mouseY: Int, partialTicks: Float) {
+            renderer.render(graphics, WidgetRendererContext<AbstractWidget>(this, mouseX, mouseY), partialTicks)
+        }
+    }
 }
 
 fun <T> OlympusState(getter: () -> T): OlympusState<T> {

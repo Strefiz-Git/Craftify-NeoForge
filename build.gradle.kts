@@ -1,8 +1,21 @@
 plugins {
     java
     idea
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm") version "2.1.0"
     id("net.neoforged.gradle.userdev") version "7.1.38"
+    id("com.gradleup.shadow") version "9.3.0"
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("21")
+    targetCompatibility = JavaVersion.toVersion("21")
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+val shadowImplementation by configurations.creating {
+    configurations["implementation"].extendsFrom(this)
 }
 
 base {
@@ -21,6 +34,46 @@ repositories {
 dependencies {
     implementation(libs.neoforge)
     implementation(libs.kotlin.stdlib)
+    runtimeOnly(libs.devauth)
+
+    shadowImplementation(libs.vigilance) {
+        isTransitive = false
+    }
+    shadowImplementation(libs.elementa) {
+        isTransitive = false
+    }
+    shadowImplementation(libs.universalcraft) {
+        exclude("org.jetbrains.kotlinx")
+        exclude("org.jetbrains.kotlin")
+        exclude("net.fabricmc")
+    }
+    shadowImplementation(libs.resourceful.lib)
+    shadowImplementation(libs.olympus)
+    shadowImplementation(libs.jukebox) {
+        isTransitive = false
+    }
+    shadowImplementation(libs.ktor.cio) {
+        exclude("org.jetbrains.kotlinx")
+        exclude("org.jetbrains.kotlin")
+    }
+    shadowImplementation(libs.ktor.core) {
+        exclude("org.jetbrains.kotlinx")
+        exclude("org.jetbrains.kotlin")
+        exclude("org.slf4j")
+    }
+    libs.bundles.ktor.get().forEach {
+        shadowImplementation(it)
+    }
+}
+
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    archiveClassifier.set("dev")
+    configurations = listOf(shadowImplementation)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    relocate("gg.essential", "tech.thatgravyboat.craftify.libs.essential")
+    exclude("pack.mcmeta")
+    exclude("META-INF/maven/**")
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -28,7 +81,5 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "21"
-    }
+    compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
 }

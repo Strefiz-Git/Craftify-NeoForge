@@ -31,6 +31,6 @@ class ServerboundSongPacket(
             ::ServerboundSongPacket
         )
 
-        val TYPE: CustomPacketPayload.Type<ServerboundSongPacket> = CustomPacketPayload.Type(ResourceLocation("craftify", "song"))
+        val TYPE: CustomPacketPayload.Type<ServerboundSongPacket> = CustomPacketPayload.Type(ResourceLocation.fromNamespaceAndPath("craftify", "song"))
     }
 }

@@ -1,10 +1,11 @@
 package tech.thatgravyboat.craftify.ui
 
 import earth.terrarium.olympus.client.components.Widgets
+import earth.terrarium.olympus.client.components.base.renderer.WidgetRenderer
 import earth.terrarium.olympus.client.layouts.Layouts
 import earth.terrarium.olympus.client.layouts.LinearViewLayout
-import earth.terrarium.olympus.client.pipelines.RoundedRectangle
-import earth.terrarium.olympus.client.pipelines.RoundedTexture
+import earth.terrarium.olympus.client.shader.builtin.RoundedRectShader
+import earth.terrarium.olympus.client.shader.builtin.RoundedTextureShader
 import earth.terrarium.olympus.client.utils.Orientation
 import net.minecraft.client.gui.GuiGraphics
 import tech.thatgravyboat.craftify.config.Config
@@ -36,7 +37,7 @@ object UIPlayerV2 : BaseRenderable(WIDTH, HEIGHT) {
         val layout = this.layout ?: return
         val hoveredLayout = this.hoveredLayout ?: return
 
-        RoundedRectangle.draw(
+        RoundedRectShader.fill(
             graphics,
             x, y, width, height,
             ThemeConfig.backgroundColor.rgb, if (this.isHovered) ThemeConfig.borderColor.rgb else ThemeConfig.backgroundColor.rgb,
@@ -82,21 +83,21 @@ object UIPlayerV2 : BaseRenderable(WIDTH, HEIGHT) {
             (start + offset) to end
         }
 
-        val image = Widgets.renderable { graphics, ctx, _ ->
+        val image = renderable(WidgetRenderer { graphics, ctx, _ ->
             val texture = uri?.let(ImageCaches.ALBUM::get)
             if (texture != null && texture != ImageCaches.MISSING_TEXTURE) {
-                RoundedTexture.draw(graphics, ctx.x, ctx.y, ctx.width, ctx.height, texture, 0f, 0f, 1f, 1f, ThemeConfig.backgroundRadius)
+                RoundedTextureShader.blit(graphics, ctx.x, ctx.y, ctx.width, ctx.height, texture, 0f, 0f, 1f, 1f, ThemeConfig.backgroundRadius)
             } else {
-                RoundedRectangle.draw(graphics, ctx.x, ctx.y, ctx.width, ctx.height, ThemeConfig.backgroundColor.rgb, 0, ThemeConfig.backgroundRadius, 0)
+                RoundedRectShader.fill(graphics, ctx.x, ctx.y, ctx.width, ctx.height, ThemeConfig.backgroundColor.rgb, 0, ThemeConfig.backgroundRadius, 0)
             }
-        }
+        })
 
         val textContainer = Widgets.frame { frame ->
             frame.withSize(95, 18)
             frame.withEqualSpacing(Orientation.VERTICAL)
             frame.withContents { layout ->
-                layout.addChild(Widgets.renderable(state.song.title.asRenderer(0f, ThemeConfig.titleColor, 1f)).withSize(95, 10))
-                layout.addChild(Widgets.renderable(artists.asRenderer(0f, ThemeConfig.artistColor, 0.5f)).withSize(95, 6))
+                layout.addChild(renderable(state.song.title.asRenderer(0f, ThemeConfig.titleColor, 1f)).withSize(95, 10))
+                layout.addChild(renderable(artists.asRenderer(0f, ThemeConfig.artistColor, 0.5f)).withSize(95, 6))
             }
         }
 
@@ -113,20 +114,18 @@ object UIPlayerV2 : BaseRenderable(WIDTH, HEIGHT) {
                         val start = progress.map { (time, _) -> formatTime(time) }
                         val end = progress.map { (_, total) -> formatTime(total) }
 
-                        layout.addChild(Widgets.renderable(start.asRenderer(0f, ThemeConfig.progressNumberColor, 0.5f)).withSize(30, 7))
-                        layout.addChild(Widgets.renderable(end.asRenderer(1f, ThemeConfig.progressNumberColor, 0.5f)).withSize(30, 7))
+                        layout.addChild(renderable(start.asRenderer(0f, ThemeConfig.progressNumberColor, 0.5f)).withSize(30, 7))
+                        layout.addChild(renderable(end.asRenderer(1f, ThemeConfig.progressNumberColor, 0.5f)).withSize(30, 7))
                     }
                 })
                 layout.addChild(
-                    Widgets.renderable({ graphics, ctx, _ ->
+                    renderable(WidgetRenderer { graphics, ctx, _ ->
                         val (time, total) = progress.get()
                         val percent = (time / total).coerceIn(0f, 1f)
 
                         graphics.fillRounded(ctx.x, ctx.y, ctx.width, ctx.height, ThemeConfig.progressBackgroundColor, ThemeConfig.progressRadius)
                         graphics.fillRounded(ctx.x, ctx.y, (ctx.width * percent).toInt(), ctx.height, ThemeConfig.progressColor, ThemeConfig.progressRadius)
-                    }) {
-                        it.withSize(95, 3)
-                    }
+                    }).withSize(95, 3)
                 )
             }
         }

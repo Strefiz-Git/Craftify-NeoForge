@@ -1,6 +1,6 @@
 [versions]
 neoforge = "21.1.213"
-kotlin = "1.9.22"
+kotlin = "2.1.0"
 
 ktor = "2.1.0"
 
@@ -30,12 +30,12 @@ ktor-websockets = { module = "io.ktor:ktor-websockets-jvm", version.ref = "ktor"
 
 jukebox = { module = "tech.thatgravyboat:jukebox-jvm", version = "1.0.2" }
 
-universalcraft = { module = "gg.essential:universalcraft-26.1-neoforge", version.ref = "universalcraft" }
+universalcraft = { module = "gg.essential:universalcraft-1.21-neoforge", version.ref = "universalcraft" }
 elementa = { module = "gg.essential:elementa", version.ref = "elementa" }
 vigilance = { module = "gg.essential:vigilance", version.ref = "vigilance" }
 
-olympus = { module = "earth.terrarium.olympus:olympus-neoforge-26.1", version = "1.8.1" }
-resourceful-lib = { module = "com.teamresourceful.resourcefullib:resourcefullib-neoforge-26.1", version = "4.0.1" }
+olympus = { module = "earth.terrarium.olympus:olympus-neoforge-1.21", version = "1.0.19" }
+resourceful-lib = { module = "com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21", version = "3.0.12" }
 
 [bundles]
 ktor = [

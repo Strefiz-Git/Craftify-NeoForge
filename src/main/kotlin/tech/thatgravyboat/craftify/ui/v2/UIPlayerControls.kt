@@ -84,7 +84,7 @@ object UIPlayerControls {
                 val uri = URI(state.song.url)
                 if (!Config.linkMode.copy(uri)) {
                     UChat.chat(Component.literal("${ChatColor.GREEN}Craftify > ${ChatColor.GRAY} $uri").also {
-                        it.withStyle { style -> style.withClickEvent(ClickEvent.OpenUrl(uri)) }
+                        it.withStyle { style -> style.withClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, uri.toString())) }
                     })
                 }
             }

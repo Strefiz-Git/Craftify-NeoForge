@@ -1,6 +1,5 @@
 package tech.thatgravyboat.craftify.ui.v2
 
-import com.mojang.blaze3d.platform.cursor.CursorTypes
 import earth.terrarium.olympus.client.components.base.renderer.WidgetRenderer
 import earth.terrarium.olympus.client.components.base.renderer.WidgetRendererContext
 import earth.terrarium.olympus.client.components.buttons.Button
@@ -38,10 +37,6 @@ class ControlButtonWidgetRenderer(
                 width = ctx.width, height = ctx.height,
                 color = color.rgb
             )
-        }
-
-        if (ctx.widget.isHovered) {
-            graphics.requestCursor(CursorTypes.POINTING_HAND)
         }
     }
 }

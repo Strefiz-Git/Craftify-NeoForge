@@ -15,7 +15,8 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.neoforge.client.event.ClientTickEvent
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
+import net.neoforged.neoforge.network.handling.IPayloadHandler
 import tech.thatgravyboat.craftify.config.Config
 import tech.thatgravyboat.craftify.platform.McClient
 import tech.thatgravyboat.craftify.platform.McKeybind
@@ -49,11 +50,6 @@ object Craftify {
     fun onClientSetup(event: FMLClientSetupEvent) {
         AdManager.load()
         ServiceConfig.load()
-
-        skipForward.register()
-        skipPrevious.register()
-        togglePlaying.register()
-        hidePlayer.register()
     }
 
     @SubscribeEvent
@@ -65,11 +61,11 @@ object Craftify {
     }
 
     @SubscribeEvent
-    fun onRegisterPayloads(event: RegisterPayloadHandlerEvent) {
+    fun onRegisterPayloads(event: RegisterPayloadHandlersEvent) {
         val registrar = event.registrar("craftify").versioned("1.0.0")
         registrar.playBidirectional(
             ServerboundSongPacket.TYPE, ServerboundSongPacket.CODEC,
-            { handlerBuilder -> handlerBuilder.serverbound { (payload, context) -> } }
+            IPayloadHandler { _, _ -> }
         )
     }
 
@@ -144,5 +140,5 @@ object Craftify {
         service?.setup()
     }
 
-    fun id(path: String) = ResourceLocation("craftify", path)
+    fun id(path: String) = ResourceLocation.fromNamespaceAndPath("craftify", path)
 }

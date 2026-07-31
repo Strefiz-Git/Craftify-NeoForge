@@ -26,8 +26,8 @@ object McClient {
     val options: Options get() = self.options
     val window: Window get() = self.window
 
-    val hideGui: Boolean get() = self.gui.hud.isHidden
-    val showDebugGui: Boolean get() = self.debugEntries.isOverlayVisible
+    val hideGui: Boolean get() = self.options.hideGui
+    val showDebugGui: Boolean get() = self.getDebugOverlay().showDebugScreen()
     val isTabOpened: Boolean get() {
         if (!options.keyPlayerList.isDown) return false
 
@@ -41,10 +41,6 @@ object McClient {
     val isLanServer: Boolean get() = self.currentServer?.type() == ServerData.Type.LAN
 
     fun run(nextTick: Boolean = true, action: () -> Unit) {
-        if (nextTick) {
-            self.schedule(action)
-        } else {
-            self.execute(action)
-        }
+        self.execute(action)
     }
 }

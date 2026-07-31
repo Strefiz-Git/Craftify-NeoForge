@@ -11,11 +11,11 @@ inline fun GuiGraphics.pushPop(runnable: () -> Unit) {
 }
 
 fun GuiGraphics.scale(x: Number, y: Number) {
-    this.pose().scale(x.toFloat(), y.toFloat())
+    this.pose().scale(x.toFloat(), y.toFloat(), 1.0f)
 }
 
 fun GuiGraphics.translate(x: Number, y: Number) {
-    this.pose().translate(x.toFloat(), y.toFloat())
+    this.pose().translate(x.toDouble(), y.toDouble(), 0.0)
 }
 
 fun GuiGraphics.drawTexture(
