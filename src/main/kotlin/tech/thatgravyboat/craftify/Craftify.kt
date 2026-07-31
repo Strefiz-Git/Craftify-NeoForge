@@ -6,6 +6,7 @@ import gg.essential.universal.UKeyboard
 import gg.essential.universal.UScreen
 import gg.essential.vigilance.gui.SettingsGui
 import net.minecraft.client.gui.screens.Screen
+import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.SubscribeEvent
@@ -16,6 +17,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
+import net.neoforged.neoforge.registries.RegisterEvent
 import net.neoforged.neoforge.network.handling.IPayloadHandler
 import tech.thatgravyboat.craftify.config.Config
 import tech.thatgravyboat.craftify.platform.McClient
@@ -31,9 +33,18 @@ import tech.thatgravyboat.craftify.ui.Player
 import tech.thatgravyboat.craftify.utils.Utils
 import tech.thatgravyboat.jukebox.api.service.BaseService
 
-@Mod("craftify")
 @EventBusSubscriber(modid = "craftify", bus = EventBusSubscriber.Bus.MOD, value = [Dist.CLIENT])
 object Craftify {
+
+    @SubscribeEvent
+    fun onRegister(event: RegisterEvent) {
+        if (event.registryKey != Registries.DATA_COMPONENT_TYPE) return
+        try {
+            Class.forName("immersive_melodies.Items")
+        } catch (_: ClassNotFoundException) {
+        } catch (_: NoClassDefFoundError) {
+        }
+    }
 
     private val keyBindCategory = "key.categories.craftify"
     val skipForward = McKeybind("Skip Forward", keyBindCategory, InputConstants.Type.KEYSYM, UKeyboard.KEY_NONE)
